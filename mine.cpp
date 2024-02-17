@@ -14,8 +14,8 @@
 #include <qimage.h>
 #include <QtWidgets/QtWidgets>
 
-MineField::MineField( QWidget *parent,CHESS_DIFFICULTY chess_level )
-        : QWidget( parent ),level(chess_level)
+MineField::MineField( QWidget *parent,CHESS_DIFFICULTY chess_level,QString en,QString cn )
+        : QWidget( parent ),level(chess_level), en_qm(en),cn_qm(cn)
 {
     setPalette( QPalette( QColor( 250, 250, 200) ) );
     bMineDefeat = false;
@@ -412,18 +412,15 @@ void MineField::paintEvent( QPaintEvent *e )
         p1.setBrush(Qt::black);
         p1.setFont(QFont("Courier",48,QFont::Bold));
 
-        static const QString qLanguage_cn = ".\\mine_cn.qm";
-        static const QString qLanguage_en = ".\\mine_en.qm";
         QTranslator qt;
         bool b = false;
         if (iLanguage == 1)//English
         {
-            b = qt.load(qLanguage_en);
+            b = qt.load(en_qm);
         }
         else//Chinese
         {
-            QTranslator qt;
-            b = qt.load(qLanguage_cn);
+            b = qt.load(cn_qm);
         }
         if (!b)
         {

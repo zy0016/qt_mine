@@ -66,7 +66,7 @@ class gameBoard : public QWidget
     Q_OBJECT
 
 public:
-    gameBoard(QWidget *parent = nullptr);
+    gameBoard(QWidget *parent = nullptr,QString en_qm="",QString cn_qm="");
 
 private slots:
     void aboutClicked();
@@ -85,6 +85,9 @@ signals:
     void signals_setTime(int iTime);
 //! [1]
 private:
+    int iLanguage;
+    QString en_qm;
+    QString cn_qm;
     Button *aboutButton;
     Button *newgameButton;
     Button *quitButton;

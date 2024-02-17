@@ -58,12 +58,12 @@
 #include <QPushButton>
 #include <QTranslator>
 
-gameBoard::gameBoard(QWidget *parent)
-    : QWidget(parent)
+gameBoard::gameBoard(QWidget *parent,QString en,QString cn)
+    : QWidget(parent), en_qm(en),cn_qm(cn)
 {
     mineCount = MINESNUM_EASY;
 
-    qMineChess = new MineField( this ,Difficult_Easy);
+    qMineChess = new MineField( this ,Difficult_Easy,en_qm,cn_qm);
     aboutButton = createButton(tr("About"), SLOT(aboutClicked()));
     newgameButton = createButton(tr("New Game"), SLOT(newgame()));
     quitButton = createButton(tr("Quit"), SLOT(quitClicked()));
@@ -127,18 +127,16 @@ gameBoard::gameBoard(QWidget *parent)
 
 void gameBoard::Language(int l)
 {
-    static const QString qLanguage_cn = ".\\mine_cn.qm";
-    static const QString qLanguage_en = ".\\mine_en.qm";
     QTranslator qt;
     bool b = false;
+    iLanguage = l;
     if (l == 1)//English
     {
-        b = qt.load(qLanguage_en);
+        b = qt.load(en_qm);
     }
     else//Chinese
     {
-        QTranslator qt;
-        b = qt.load(qLanguage_cn);
+        b = qt.load(cn_qm);
     }
     if (!b)
     {
@@ -156,6 +154,21 @@ void gameBoard::Language(int l)
 
 void gameBoard::aboutClicked()
 {
+    QTranslator qt;
+    bool b = false;
+    if (iLanguage == 1)//English
+    {
+        b = qt.load(en_qm);
+    }
+    else//Chinese
+    {
+        b = qt.load(cn_qm);
+    }
+    if (!b)
+    {
+        QMessageBox::about(nullptr,"about mine","I can't load qs file");
+    }
+    QCoreApplication::installTranslator(&qt);
     QMessageBox::about(this,tr("about mine"),tr("1.0 version Copyright 12-01-2023 zhaoyong"));
 }
 void gameBoard::newgame()

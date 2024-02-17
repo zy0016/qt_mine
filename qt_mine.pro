@@ -1,5 +1,5 @@
 QT += widgets
-
+RC_FILE = logo.rc
 HEADERS       = button.h \
     gameBoard.h \
     lcdnumber.h \

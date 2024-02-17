@@ -74,7 +74,8 @@ class MineField : public QWidget
 {
     Q_OBJECT
 public:
-    MineField( QWidget *parent=0,CHESS_DIFFICULTY chess_level = Difficult_Easy);
+    MineField( QWidget *parent=0,CHESS_DIFFICULTY chess_level = Difficult_Easy,
+               QString en="",QString cn="");
 
 public slots:
     void NewGame(CHESS_DIFFICULTY chess_level = Difficult_Easy);
@@ -109,6 +110,8 @@ private:
      bool bMineDefeat;//true:mine defeat,display game over,false:game doesn't over,
      bool bStartMine;//true:begin mine,false:don't begin mine
      //bool bGameResult;//true:success,false:fail.
+     QString en_qm;
+     QString cn_qm;
      CHESS_DIFFICULTY level;
      GAME_RESULT game_result;
      int iLanguage;
