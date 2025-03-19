@@ -110,9 +110,9 @@ void MineField::SetMines(int iRow,int iCol)
 
 void MineField::mousePressEvent( QMouseEvent * e)
 {
-    if ((e->x() < hx1) || (e->x() > hx1 + bw * chessnum))
+    if ((e->pos().x() < hx1) || (e->pos().x() > hx1 + bw * chessnum))
         return;
-    if ((e->y() < hy1) || (e->y() > hy1 + bh * chessnum))
+    if ((e->pos().y() < hy1) || (e->pos().y() > hy1 + bh * chessnum))
         return;
 
     int irow,icol;
