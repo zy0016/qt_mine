@@ -49,13 +49,18 @@
 ****************************************************************************/
 
 #include "button.h"
-
+#include "mine_normal.h"
 //! [0]
 Button::Button(const QString &text, QWidget *parent)
     : QToolButton(parent)
 {
+#ifdef MINESTYLE_OLD
     setMinimumWidth(100);
     setMaximumWidth(100);
+#else
+    setMinimumWidth(50);
+    setMaximumWidth(50);
+#endif
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setFont(QFont( "Times", 8 ));
     setText(text);
@@ -67,8 +72,13 @@ QSize Button::sizeHint() const
 //! [1] //! [2]
 {
     QSize size = QToolButton::sizeHint();
+#ifdef MINESTYLE_OLD
     size.rheight() += 20;
     size.rwidth() = qMax(size.width(), size.height());
+#else
+    size.rheight() = 50;
+    size.rwidth() = 50;
+#endif
     return size;
 }
 //! [2]

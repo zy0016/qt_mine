@@ -1,33 +1,18 @@
-/****************************************************************
-**
-** Implementation NimField class, Qt tutorial 14
-**
-****************************************************************/
+#include <QtWidgets>
+#include "paintmine.h"
 
-#include "mine.h"
-#include <qtimer.h>
-#include <qpainter.h>
-#include <qpixmap.h>
-#include <qcursor.h>
-#include <stdlib.h>
-#include <qcolor.h>
-#include <qimage.h>
-#include <QtWidgets/QtWidgets>
-
-MineField::MineField( QWidget *parent,CHESS_DIFFICULTY chess_level,QString en,QString cn )
-        : QWidget( parent ),level(chess_level), en_qm(en),cn_qm(cn)
+paintmine::paintmine(QWidget *parent,CHESS_DIFFICULTY chess_level,QString en,QString cn):
+    QWidget( parent ),level(chess_level), en_qm(en),cn_qm(cn)
 {
-    setPalette( QPalette( QColor( 250, 250, 200) ) );
+    //setFixedSize(800, 800); // 固定大小，适合绘制正方形
     bMineDefeat = false;
     qClew = "";
 }
-
-void MineField::NewGame(CHESS_DIFFICULTY chess_level)
+void paintmine::NewGame(CHESS_DIFFICULTY chess_level)
 {
     InitChessman(chess_level);
 }
-
-void MineField::SetMines(int iRow,int iCol)
+void paintmine::SetMines(int iRow,int iCol)
 {
     if (sChessmine[iRow][iCol].bCheck)
         return;
@@ -107,8 +92,7 @@ void MineField::SetMines(int iRow,int iCol)
         SetMines(iRow + 1,iCol + 1);//9
     }
 }
-
-void MineField::mousePressEvent( QMouseEvent * e)
+void paintmine::mousePressEvent( QMouseEvent * e)
 {
     if ((e->pos().x() < hx1) || (e->pos().x() > hx1 + bw * chessnum))
         return;
@@ -131,13 +115,13 @@ void MineField::mousePressEvent( QMouseEvent * e)
     {
         if (sChessmine[irow][icol].bMineType)//people click the mine,game over
         {
-          //display all mines and display game over.
-          sChessmine[irow][icol].eGridType = GRID_DEFEAT;
-          bMineDefeat = true;
-          qClew = "Defeat!";
-          game_result = FAIL;
-          qWarning("Defeat Row:%d,Col:%d",irow,icol);
-          MineOver();
+            //display all mines and display game over.
+            sChessmine[irow][icol].eGridType = GRID_DEFEAT;
+            bMineDefeat = true;
+            qClew = "Defeat!";
+            game_result = FAIL;
+            qWarning("Defeat Row:%d,Col:%d",irow,icol);
+            MineOver();
         }
         else//
         {
@@ -159,7 +143,7 @@ void MineField::mousePressEvent( QMouseEvent * e)
                 qWarning("You Win!");
                 MineOver();
             }
-         }
+        }
         repaint();
     }
     else if (e->button() == Qt::RightButton)
@@ -191,11 +175,11 @@ void MineField::mousePressEvent( QMouseEvent * e)
         repaint();
     }
 }
-void MineField::SetLanguage(int l)
+void paintmine::SetLanguage(int l)
 {
     iLanguage = l;
 }
-void MineField::BeginMine()
+void paintmine::BeginMine()
 {
     qWarning("In mine.cpp, call BeginMine");
     if (bStartMine)
@@ -206,8 +190,7 @@ void MineField::BeginMine()
     bStartMine = true;
     emit StartMineTimer();
 }
-
-void MineField::MineOver()
+void paintmine::MineOver()
 {
     qWarning("In mine.cpp, call MineOver");
     if (!bStartMine)
@@ -218,14 +201,12 @@ void MineField::MineOver()
     bStartMine = false;
     emit StopMineTimer();
 }
-
-void MineField::ClearTime()
+void paintmine::ClearTime()
 {
     qWarning("call ClearTime");
     ClearMineTime();
 }
-
-void MineField::SetMineNumber(int iValue)
+void paintmine::SetMineNumber(int iValue)
 {
     if (iValue > 0)
     {
@@ -241,9 +222,7 @@ void MineField::SetMineNumber(int iValue)
     }
     emit MineNumberValueChange(minenum - iFindMineNumber);
 }
-
-
-bool MineField::GetChessNumber(int & iRow,int & iCol,const QPoint &point)
+bool paintmine::GetChessNumber(int & iRow,int & iCol,const QPoint &point)
 {
     int i,j;
     for (i = 0;i < chessnum;i++)
@@ -261,14 +240,8 @@ bool MineField::GetChessNumber(int & iRow,int & iCol,const QPoint &point)
     }
     return false;
 }
-/*********************************************************************\
-* Function       IfGameOver
-* Purpose     ??????(????1,????0)
-* Params
-* Return
-* Remarks
-**********************************************************************/
-bool MineField::IfGameOver()
+
+bool paintmine::IfGameOver()
 {
     int i,j;
     int iMineNumber = 0;
@@ -290,11 +263,12 @@ bool MineField::IfGameOver()
     }
     return (iMineNumber == minenum);
 }
-
-void MineField::paintEvent( QPaintEvent *e )
+void paintmine::paintEvent(QPaintEvent *event)
 {
-    (void)e;
-    //QRect updateR = e->rect();
+    //QPainter painter(this);
+    //painter.setBrush(Qt::black); // 设置黑色画刷
+    //painter.drawRect(50, 10, 40, 40); // 绘制正方形
+    (void)event;
     QPainter p( this );
     QPainter pDefeat(this);
     QColor qcolor(192,192,192);
@@ -339,8 +313,6 @@ void MineField::paintEvent( QPaintEvent *e )
                     QPainter pMine( this );
                     pMine.setBrush(qcolor);
                     pMine.setPen(Qt::NoPen);
-                    //p.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),BW - 1,BH - 1);
-                    //pMine.drawPie(QRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),BW,BH),0,360 * 16);
                     pMine.drawImage(sChessmine[i][j].qPChessman.x() + (bw - iPicWidth) / 2,sChessmine[i][j].qPChessman.y() + (bh - iPicHeight) / 2,qminered);
                 }
                 else
@@ -367,31 +339,31 @@ void MineField::paintEvent( QPaintEvent *e )
                 switch (sChessmine[i][j].eGridType)
                 {
                 case GRID_NORMAL:
-                    {
-                        QPainter p1( this );
-                        p1.setBrush(qcolor);
-                        p1.setPen(Qt::NoPen);
-                        p1.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),bw - 1,bh - 1);
-                    }
-                    break;
+                {
+                    QPainter p1( this );
+                    p1.setBrush(qcolor);
+                    p1.setPen(Qt::NoPen);
+                    p1.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),bw - 1,bh - 1);
+                }
+                break;
                 case GRID_FLAG:
-                    {
-                        QPainter p1( this );
-                        p1.setBrush(qcolor);
-                        p1.setPen(Qt::NoPen);
-                        p1.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),bw - 1,bh - 1);
-                        p1.drawImage(sChessmine[i][j].qPChessman.x() + (bw - iPicWidth) / 2,sChessmine[i][j].qPChessman.y() + (bh - iPicHeight) / 2,qflag);
-                    }
-                    break;
+                {
+                    QPainter p1( this );
+                    p1.setBrush(qcolor);
+                    p1.setPen(Qt::NoPen);
+                    p1.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),bw - 1,bh - 1);
+                    p1.drawImage(sChessmine[i][j].qPChessman.x() + (bw - iPicWidth) / 2,sChessmine[i][j].qPChessman.y() + (bh - iPicHeight) / 2,qflag);
+                }
+                break;
                 case GRID_INTERROGATION:
-                    {
-                        QPainter p1( this );
-                        p1.setBrush(qcolor);
-                        p1.setPen(Qt::NoPen);
-                        p1.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),bw - 1,bh - 1);
-                        p1.drawImage(sChessmine[i][j].qPChessman.x() + (bw - iPicWidth) / 2,sChessmine[i][j].qPChessman.y() + (bh - iPicHeight) / 2,qinterrogation);
-                    }
-                    break;
+                {
+                    QPainter p1( this );
+                    p1.setBrush(qcolor);
+                    p1.setPen(Qt::NoPen);
+                    p1.drawRect(sChessmine[i][j].qPChessman.x(),sChessmine[i][j].qPChessman.y(),bw - 1,bh - 1);
+                    p1.drawImage(sChessmine[i][j].qPChessman.x() + (bw - iPicWidth) / 2,sChessmine[i][j].qPChessman.y() + (bh - iPicHeight) / 2,qinterrogation);
+                }
+                break;
                 case GRID_CLICKOPEN:
                     if (sChessmine[i][j].iMineNum != 0)//display the number of the grid
                     {
@@ -424,7 +396,7 @@ void MineField::paintEvent( QPaintEvent *e )
         }
         if (!b)
         {
-            QMessageBox::about(nullptr,"about mine","mine.cpp can't load qs file");
+            //QMessageBox::about(nullptr,"about mine","mine.cpp can't load qs file");
         }
         QCoreApplication::installTranslator(&qt);
         switch (game_result)
@@ -434,6 +406,7 @@ void MineField::paintEvent( QPaintEvent *e )
             break;
         case FAIL:
             p1.drawText(rect(),Qt::AlignBottom,tr("You fail."));
+            emit gamefail();
             break;
         default:
             p1.drawText(rect(),Qt::AlignBottom,qClew);
@@ -441,7 +414,7 @@ void MineField::paintEvent( QPaintEvent *e )
         }
     }
 }
-void MineField::DrawMineNumber(int i,int j)
+void paintmine::DrawMineNumber(int i,int j)
 {
     QPainter myTxt(this);
     myTxt.setPen(Qt::black);
@@ -455,26 +428,20 @@ void MineField::DrawMineNumber(int i,int j)
     qMineNum = cMineNum;
     myTxt.drawText(sChessmine[i][j].qPChessman.x() + bw / 2 - 5,sChessmine[i][j].qPChessman.y() + bh / 2 + 4,qMineNum);
 }
-bool MineField::IfExistMineInCurrentCol(int icol)
+bool paintmine::IfExistMineInCurrentCol(int icol)
 {
-  int i;
-  for (i = 0;i < chessnum ;i++)
-  {
-      if (sChessmine[i][icol].bMineType)
-      {
-          return true;
-      }
-  }
-  return false;
+    int i;
+    for (i = 0;i < chessnum ;i++)
+    {
+        if (sChessmine[i][icol].bMineType)
+        {
+            return true;
+        }
+    }
+    return false;
 }
-/*********************************************************************\
-* Function       InitChessman
-* Purpose     ???????,????
-* Params
-* Return
-* Remarks
-**********************************************************************/
-void MineField::InitChessman(CHESS_DIFFICULTY chess_level)
+
+void paintmine::InitChessman(CHESS_DIFFICULTY chess_level)
 {
     int i,j;
     int iMinenum = 0,iMineCol,iMineCount;
@@ -492,7 +459,7 @@ void MineField::InitChessman(CHESS_DIFFICULTY chess_level)
         ColCount = CHESSNUM_EASY;
         chessnum = CHESSNUM_EASY;
         minenum = MINESNUM_EASY;
-        hx1 = 100;
+        hx1 = 10;
         hy1 = 3;
         bh = 40;
         bw = bh;
@@ -502,13 +469,20 @@ void MineField::InitChessman(CHESS_DIFFICULTY chess_level)
         ColCount = CHESSNUM_MID;
         chessnum = CHESSNUM_MID;
         minenum = MINESNUM_MID;
-        hx1 = 50;
+        hx1 = 10;
         hy1 = 3;
         bh = 30;
         bw = bh;
         break;
     case Difficult_Hard:
-        //TODO
+        RowCount = CHESSNUM_HARD;
+        ColCount = CHESSNUM_HARD;
+        chessnum = CHESSNUM_HARD;
+        minenum = MINESNUM_HARD;
+        hx1 = 10;
+        hy1 = 3;
+        bh = 30;
+        bw = bh;
         break;
     }
     //////////////////////////////////////////
