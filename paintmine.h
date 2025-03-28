@@ -10,11 +10,11 @@
 class QTimer;
 
 #define EASY_SCREEN_SIZE_W 360
-#define EASY_SCREEN_SIZE_H 500
+#define EASY_SCREEN_SIZE_H 440
 #define MID_SCREEN_SIZE_W 520
-#define MID_SCREEN_SIZE_H 650
+#define MID_SCREEN_SIZE_H 590
 #define HARD_SCREEN_SIZE_W 650
-#define HARD_SCREEN_SIZE_H 770
+#define HARD_SCREEN_SIZE_H 710
 class paintmine : public QWidget
 {
     Q_OBJECT

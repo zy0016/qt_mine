@@ -178,6 +178,7 @@ void paintmine::mousePressEvent( QMouseEvent * e)
 void paintmine::SetLanguage(int l)
 {
     iLanguage = l;
+    repaint();
 }
 void paintmine::BeginMine()
 {
@@ -380,6 +381,14 @@ void paintmine::paintEvent(QPaintEvent *event)
     }
     if (bMineDefeat || IfGameOver())
     {
+        if (game_result == FAIL)
+        {
+            emit gamefail();
+        }
+    }
+#if 0
+    if (bMineDefeat || IfGameOver())
+    {
         QPainter p1( this );
         p1.setBrush(Qt::black);
         p1.setFont(QFont("Courier",48,QFont::Bold));
@@ -405,7 +414,7 @@ void paintmine::paintEvent(QPaintEvent *event)
             p1.drawText(rect(),Qt::AlignBottom,tr("You Win!"));
             break;
         case FAIL:
-            p1.drawText(rect(),Qt::AlignBottom,tr("You fail."));
+            p1.drawText(rect(),Qt::AlignBottom,tr("You fail!"));
             emit gamefail();
             break;
         default:
@@ -413,6 +422,7 @@ void paintmine::paintEvent(QPaintEvent *event)
             break;
         }
     }
+#endif
 }
 void paintmine::DrawMineNumber(int i,int j)
 {

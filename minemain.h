@@ -50,6 +50,8 @@ private:
     QAction *aboutAct;
     Button *createButton(const QString &text, const char *member);
     void Language(int);
+    void retranslateUi();
+    void createmenu();
 
 private slots:
     void  slot_display(int);
