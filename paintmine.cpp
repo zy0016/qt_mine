@@ -4,7 +4,6 @@
 paintmine::paintmine(QWidget *parent,CHESS_DIFFICULTY chess_level,QString en,QString cn):
     QWidget( parent ),level(chess_level), en_qm(en),cn_qm(cn)
 {
-    //setFixedSize(800, 800); // 固定大小，适合绘制正方形
     bMineDefeat = false;
     qClew = "";
 }
@@ -266,9 +265,6 @@ bool paintmine::IfGameOver()
 }
 void paintmine::paintEvent(QPaintEvent *event)
 {
-    //QPainter painter(this);
-    //painter.setBrush(Qt::black); // 设置黑色画刷
-    //painter.drawRect(50, 10, 40, 40); // 绘制正方形
     (void)event;
     QPainter p( this );
     QPainter pDefeat(this);
@@ -284,13 +280,13 @@ void paintmine::paintEvent(QPaintEvent *event)
 
     p.setPen(Qt::black);
 
-    for (i = 0;i < iLinenum;i++)//18??
+    for (i = 0;i < iLinenum;i++)//18
     {
-        if (i < iLinenum / 2)//??(??)
+        if (i < iLinenum / 2)
         {
             p.drawLine(hx1,hy1 + bh * i,hx1 + bw * chessnum,hy1 + bh * i);
         }
-        else//??(??)
+        else
         {
             p.drawLine(hx1 + bw * (i - iLinenum / 2),hy1,hx1 + bw * (i - iLinenum / 2),hy1 + bh * chessnum);
         }

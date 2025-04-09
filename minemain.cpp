@@ -55,6 +55,22 @@ MainWindow::MainWindow(QWidget *parent,QString en,QString cn):en_qm(en),cn_qm(cn
     qMineChess->NewGame(Difficult_Easy);
     move(10,10);
 }
+MainWindow::~MainWindow()
+{
+    delete qMineChess;
+    delete qMineTimer;
+    delete newgameButton;
+    delete lcdminenum;
+    delete lcdTimer;
+    delete exitAct;
+    delete easyAct;
+    delete middleAct;
+    delete hardAct;
+    delete chineseAct;
+    delete englishAct;
+    delete aboutAct;
+    delete fileMenu;
+}
 void MainWindow::slot_EasyAction()
 {
     setMinimumSize(EASY_SCREEN_SIZE_W,EASY_SCREEN_SIZE_H);
@@ -153,8 +169,8 @@ void MainWindow::slot_StopMine()
 void MainWindow::slot_ClearMineTime()
 {
     qWarning("slot_ClearMineTime");
-    iTimerCount = 0;
-    signals_setTime(iTimerCount);
+    slot_StopMine();
+    slot_timer_display(0);
 }
 void MainWindow::slot_newgame()
 {
@@ -213,11 +229,7 @@ void MainWindow::Language(int l)
 }
 void MainWindow::MiningTimer()
 {
-    //if (qMineTimer->isActive())
-    //  return;
-    //lcdTimer->display(++iTimerCount);
     iTimerCount++;
-    //signals_setTime(iTimerCount);
     lcdTimer->display((int)iTimerCount);//OK
     qWarning("Timer begin:%d",iTimerCount);
 }

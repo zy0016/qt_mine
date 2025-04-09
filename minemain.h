@@ -25,7 +25,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr,QString en_qm="",QString cn_qm="");
-
+    ~MainWindow();
 private:
     QString en_qm;
     QString cn_qm;

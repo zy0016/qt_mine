@@ -7,6 +7,7 @@
 #else
 #include "minemain.h"
 #endif
+//C:\Users\y36zhao\code\git\qt\build-qt_mine-Desktop_Qt_5_14_2_MinGW_64_bit-Debug\debug
 int main(int argc, char *argv[])
 {
     QString en = ".\\mine_en.qm";
